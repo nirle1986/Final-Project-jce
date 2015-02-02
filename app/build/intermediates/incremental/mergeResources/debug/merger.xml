@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main"><source path="C:\Users\Nir\AndroidstudioProjects\final-project\app\src\main\res"><file name="ic_launcher" path="C:\Users\Nir\AndroidstudioProjects\final-project\app\src\main\res\drawable-hdpi\ic_launcher.png" qualifiers="hdpi-v4" type="drawable"/><file name="ic_launcher" path="C:\Users\Nir\AndroidstudioProjects\final-project\app\src\main\res\drawable-mdpi\ic_launcher.png" qualifiers="mdpi-v4" type="drawable"/><file name="ic_launcher" path="C:\Users\Nir\AndroidstudioProjects\final-project\app\src\main\res\drawable-xhdpi\ic_launcher.png" qualifiers="xhdpi-v4" type="drawable"/><file name="ic_launcher" path="C:\Users\Nir\AndroidstudioProjects\final-project\app\src\main\res\drawable-xxhdpi\ic_launcher.png" qualifiers="xxhdpi-v4" type="drawable"/><file name="activity_main" path="C:\Users\Nir\AndroidstudioProjects\final-project\app\src\main\res\layout\activity_main.xml" qualifiers="" type="layout"/><file name="activity_request" path="C:\Users\Nir\AndroidstudioProjects\final-project\app\src\main\res\layout\activity_request.xml" qualifiers="" type="layout"/><file name="main" path="C:\Users\Nir\AndroidstudioProjects\final-project\app\src\main\res\menu\main.xml" qualifiers="" type="menu"/><file name="menu_request" path="C:\Users\Nir\AndroidstudioProjects\final-project\app\src\main\res\menu\menu_request.xml" qualifiers="" type="menu"/><file path="C:\Users\Nir\AndroidstudioProjects\final-project\app\src\main\res\values\dimens.xml" qualifiers=""><dimen name="activity_horizontal_margin">16dp</dimen><dimen name="activity_vertical_margin">16dp</dimen></file><file path="C:\Users\Nir\AndroidstudioProjects\final-project\app\src\main\res\values\strings.xml" qualifiers=""><string name="action_settings">Settings</string><string name="entrance">כניסה</string><string name="employenum">מספר עובד</string><string name="app_name">מנועי בית שמש</string><string name="title_activity_request">מנועי בית שמש</string><string name="title_activity_menu">מנועי בית שמש</string><string-array name="reason">
+        <item>בחר סיבת היעדרות</item>
+        <item>חופשה בתשלום</item>
+        <item>מחלה</item>
+        <item>הצהרה(נשים)</item>
+        <item>חופשת נישואים</item>
+        <item>אבל</item>
+        <item>התייצבות במילואים עד יום אחד</item>
+        <item>הצהרה על יציאה למילואים</item>
+        <item>חופשה ללא תשלום</item>
+        <item>תאונת עבודה</item>
+        <item>יום בחירה</item>
+    </string-array><string name="id">תעודת זהות</string></file><file path="C:\Users\Nir\AndroidstudioProjects\final-project\app\src\main\res\values\styles.xml" qualifiers=""><style name="AppBaseTheme" parent="android:Theme.Light">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style><style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style></file><file path="C:\Users\Nir\AndroidstudioProjects\final-project\app\src\main\res\values-sw720dp-land\dimens.xml" qualifiers="sw720dp-land-v13"><dimen name="activity_horizontal_margin">128dp</dimen></file><file path="C:\Users\Nir\AndroidstudioProjects\final-project\app\src\main\res\values-v11\styles.xml" qualifiers="v11"><style name="AppBaseTheme" parent="android:Theme.Holo.Light">
+        <!-- API 11 theme customizations can go here. -->
+    </style></file><file path="C:\Users\Nir\AndroidstudioProjects\final-project\app\src\main\res\values-v14\styles.xml" qualifiers="v14"><style name="AppBaseTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+        <!-- API 14 theme customizations can go here. -->
+    </style></file><file path="C:\Users\Nir\AndroidstudioProjects\final-project\app\src\main\res\values-w820dp\dimens.xml" qualifiers="w820dp-v13"><dimen name="activity_horizontal_margin">64dp</dimen></file><file name="activity_menu" path="C:\Users\Nir\AndroidstudioProjects\final-project\app\src\main\res\layout\activity_menu.xml" qualifiers="" type="layout"/><file name="menu_menu" path="C:\Users\Nir\AndroidstudioProjects\final-project\app\src\main\res\menu\menu_menu.xml" qualifiers="" type="menu"/></source><source path="C:\Users\Nir\AndroidstudioProjects\final-project\app\build\generated\res\rs\debug"/><source path="C:\Users\Nir\AndroidstudioProjects\final-project\app\build\generated\res\generated\debug"/></dataSet><dataSet config="debug"><source path="C:\Users\Nir\AndroidstudioProjects\final-project\app\src\debug\res"/></dataSet><mergedItems/></merger>
