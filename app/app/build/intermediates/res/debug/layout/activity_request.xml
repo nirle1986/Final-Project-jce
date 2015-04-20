@@ -1,0 +1,97 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:layoutDirection="rtl"
+    android:textDirection="rtl"
+    tools:context="com.example.final_project.request">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="בקשת חופשה/היעדרות"
+        android:id="@+id/textView"
+        android:textSize="25dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="בחר תאריך"
+        android:id="@+id/button"
+        android:layout_marginTop="52dp"
+        android:layout_below="@+id/textView"
+        android:layout_alignLeft="@+id/textView"
+        android:layout_alignStart="@+id/textView"
+        android:onClick="onClick"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="עד תאריך"
+        android:id="@+id/button2"
+        android:onClick="onClick"
+        android:layout_alignTop="@+id/button"
+        android:layout_alignRight="@+id/textView"
+        android:layout_alignEnd="@+id/textView" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/reasonSpinner"
+        android:layout_below="@+id/button"
+        android:layout_alignLeft="@+id/button"
+        android:layout_alignStart="@+id/button"
+        android:layout_marginTop="34dp"
+        android:layout_alignRight="@+id/button2"
+        android:layout_alignEnd="@+id/button2" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="שלח בקשה"
+        android:id="@+id/button3"
+        android:layout_alignTop="@+id/button4"
+        android:onClick="sendRequest"
+        android:layout_alignLeft="@+id/button2"
+        android:layout_alignStart="@+id/button2" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ניקוי שדות"
+        android:id="@+id/button4"
+        android:onClick="clearFields"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/button"
+        android:layout_alignEnd="@+id/button" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="צרף אישור"
+        android:id="@+id/PicButton"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/reasonSpinner" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText"
+        android:hint="הערות נוספות"
+        android:layout_below="@+id/viewImage"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/viewImage"
+        android:scaleType="fitCenter"
+        android:layout_below="@+id/PicButton"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>
+<!-- From: file:/C:/Users/Nir/AndroidstudioProjects/final-project/app/src/main/res/layout/activity_request.xml -->
