@@ -20,4 +20,6 @@ android {
 
 dependencies {
     compile 'com.android.support:support-v4:19.1.0'
+    compile files('libs/gcm.jar')
+    compile "com.google.android.gms:play-services:3.1.+"
 }

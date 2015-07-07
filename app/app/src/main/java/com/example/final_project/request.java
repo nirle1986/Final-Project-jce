@@ -1,12 +1,15 @@
 package com.example.final_project;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.graphics.Bitmap;
 import android.app.Activity;
@@ -20,11 +23,23 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.android.gcm.GCMRegistrar;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 public class request extends Activity  implements DatePickerFragment.TheListener {
@@ -33,8 +48,29 @@ public class request extends Activity  implements DatePickerFragment.TheListener
     Button btn1;
     ImageView viewImage;
     Button PicButton;
+    EditText comments;
     int pressedBtn=-1;
     private Spinner reasonSpinner;
+    int NothingSelected;
+    // Progress Dialog
+    private ProgressDialog pDialog;
+    // JSON parser class
+    JSONParser jsonParser = new JSONParser();
+    private static final String LOGIN_URL = "http://www.nir-levi.com/request/";
+    //JSON element ids from repsonse of php script:
+    private static final String TAG_SUCCESS = "success";
+    private static final String TAG_MESSAGE = "message";
+    //send to server
+    String id;
+    String FromDate;//Variable to send date
+    String ToDate;//Variable to send date
+    String reason;//Variable to send the reason for absence
+    Bitmap sendimage;//Variable to send the image
+    String sendcomments;//Variable to send the comments
+
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +87,17 @@ public class request extends Activity  implements DatePickerFragment.TheListener
                 selectImage();
             }
         });
+        comments= (EditText) findViewById(R.id.editText);
 
         //add item to the spinner(reason of Absence).
         addItemsToReasonSpinner();
         addListenerToReasonSpinner();
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            String value = extras.getString("user_id");
+            id=value;
+        }
+        Log.v("check", id);
         //listeners to the date buttons
         btn.setOnClickListener(new View.OnClickListener() {
 
@@ -79,14 +122,23 @@ public class request extends Activity  implements DatePickerFragment.TheListener
 
         });
     }
+
+
     //change to text on the button to selected date
     public void returnDate(String date) {
-        if(pressedBtn==0)
+        if(pressedBtn==0) {
             btn.setText(date);
-        if(pressedBtn==1)
+            FromDate=date;
+        }
+        if(pressedBtn==1) {
             btn1.setText(date);
+            ToDate=date;
+        }
+
     }
-    //add the spinner
+
+
+    //add the spinner to choose reason of absence
     public void addItemsToReasonSpinner(){
 
         reasonSpinner = (Spinner) findViewById(R.id.reasonSpinner);
@@ -102,21 +154,26 @@ public class request extends Activity  implements DatePickerFragment.TheListener
 
         reasonSpinner = (Spinner)findViewById(R.id.reasonSpinner);
 
+
         reasonSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long l) {
                 String itemSelectedInSpinner = parent.getItemAtPosition(pos).toString();
-//                Log.v("My Response::", itemSelectedInSpinner);
+                reason=itemSelectedInSpinner;
+                Log.v("reason",reason);
+                if(pos==0){
+                    NothingSelected=pos;
+                }
+                NothingSelected=pos;
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
-                //to do pop up window "to nothing selceted"
-
             }
         });
     }
+
 
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -152,6 +209,7 @@ public class request extends Activity  implements DatePickerFragment.TheListener
         builder.show();
     }
 
+    //show the picture according to the user's choice.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -170,6 +228,7 @@ public class request extends Activity  implements DatePickerFragment.TheListener
 
                     bitmap = BitmapFactory.decodeFile(f.getAbsolutePath(),
                             bitmapOptions);
+                    sendimage=bitmap;
 
                     viewImage.setImageBitmap(bitmap);
 
@@ -205,8 +264,86 @@ public class request extends Activity  implements DatePickerFragment.TheListener
                 c.close();
                 Bitmap gallery = (BitmapFactory.decodeFile(picturePath));
                 Log.w("path of image from gallery......******************.........", picturePath+"");
+                sendimage=gallery;
                 viewImage.setImageBitmap(gallery);
             }
+        }
+    }
+
+    class sendrequest extends AsyncTask<String, String, String> {
+
+        /**
+         * Before starting background thread Show Progress Dialog
+         */
+        boolean failure = false;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(request.this);
+            pDialog.setMessage("שולח בקשה...");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(true);
+            pDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(String... args) {
+            // TODO Auto-generated method stub
+            // Check for success tag
+            int upload;
+
+            try {
+                // Building Parameters
+                List<NameValuePair> params = new ArrayList<NameValuePair>();
+                params.add(new BasicNameValuePair("user_id", id));
+                params.add(new BasicNameValuePair("from_date",FromDate ));
+                params.add(new BasicNameValuePair("to_date",ToDate));
+                params.add(new BasicNameValuePair("reason",reason));
+            //    params.add(new BasicNameValuePair("send_image",sendimage));
+                params.add(new BasicNameValuePair("send_comments",sendcomments));
+
+                Log.d("request!", "starting");
+                // getting product details by making HTTP request
+                JSONObject json = jsonParser.makeHttpRequest(
+                        LOGIN_URL, "POST", params);
+
+                // check log for json response
+                Log.d("Login attempt", json.toString());
+
+                // json success tag
+                upload = json.getInt("upload");
+                if (upload == 1) {
+                    Log.d("upload Successful!", json.toString());
+                    Log.d("check","request sent");
+                    Intent i = new Intent(request.this, menu.class);
+                    startActivity(i);
+                    finish();
+                    return json.getString(TAG_MESSAGE);
+                } else {
+                    Log.d("upload Failure!", json.getString(TAG_MESSAGE));
+                    return json.getString(TAG_MESSAGE);
+
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+
+        }
+
+        /**
+         * After completing background task Dismiss the progress dialog
+         * *
+         */
+        protected void onPostExecute(String file_url) {
+            // dismiss the dialog once product deleted
+            pDialog.dismiss();
+            if (file_url != null) {
+                Toast.makeText(request.this, file_url, Toast.LENGTH_LONG).show();
+            }
+
         }
     }
 
@@ -217,7 +354,42 @@ public class request extends Activity  implements DatePickerFragment.TheListener
     }
     //the button of send the request
     public void sendRequest(View view){
+        int newrequest=0;
+        sendcomments=comments.getText().toString();
+        //if no reason of absence was selected
+        if (NothingSelected==0){
+                final CharSequence[] options = { "נסה מחדש"};
+                AlertDialog.Builder builder = new AlertDialog.Builder(request.this);
+                builder.setTitle("שגיאה:לא נבחרה סיבת היעדרות");
+                builder.setItems(options, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int item) {
+                    if (options[item].equals("נסה מחדש")) {
+                        dialog.dismiss();
+                    }
+                }
+                });
+                builder.show();
+        }
+        else{
+        //    Intent i = new Intent(request.this, list.class);
+        //    finish();
+        //    startActivity(i);
+       //     Log.v("send","send request");
+       //     Log.v("check",FromDate);
+        //    Log.v("check",ToDate);
+        //    Log.v("check",reason);
+         //   Log.v("check",sendcomments);
+            new sendrequest().execute();
+            newrequest=1;
+            //Intent i = new Intent(request.this, request_list.class);
+            //i.putExtra("newrequest",newrequest);
+            //startActivity(i);
+            //finish();
+
+        }
         //send the request
     }
+
 }
 

@@ -1,0 +1,105 @@
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+class Login extends CI_Controller {
+
+	function __construct()
+	{
+		parent::__construct();
+
+		$this->load->model('login_model');
+			
+	}
+	
+	public function index()
+	{
+		$this->login();			
+	}
+	
+	public function login()
+	{
+			
+		$employee_id		= $this->input->post('employee_id');
+		$user_id			= $this->input->post('user_id');
+		$reg_id				= $this->input->post('reg_id');
+		
+		$user_data = $this->login_model->authentication($employee_id,$user_id,$reg_id);
+	
+		
+		if($user_data==true){
+			$response["success"] = 1;
+			$response["message"] = "ההתחברות בוצעה בהצלחה";
+			echo json_encode($response);
+		}else{
+			$response["success"] = 0;
+			$response["message"] = "ההתחברות נכשלה";
+			echo json_encode($response);
+		}
+		
+		//if($user_data == false){
+		//	echo "not_valid";
+		//}else{
+			
+		//	switch ($user_data['manager']) {
+		//		case 0:
+		//			echo "valid";
+		//			break;
+		//		case 1:
+		//			echo "valid_manager";
+		//			break;
+		//		default:
+		//			echo "user_type_error";
+		//	}
+			
+		}
+		
+	}	
+	
+/*	
+	public function gsm($message,$registration_id)
+	{
+    // simple loading
+    // note: you have to specify API key in config before
+        $this->load->library('gcm');
+
+    // simple adding message. You can also add message in the data,
+    // but if you specified it with setMesage() already
+    // then setMessage's messages will have bigger priority
+        $this->gcm->setMessage("$message".date('d.m.Y H:s:i'));
+
+    // add recepient or few
+        $this->gcm->addRecepient($registration_id);
+
+    // set additional data
+        $this->gcm->setData(array(
+            'some_key' => 'some_val'
+        ));
+
+    // also you can add time to live
+        $this->gcm->setTtl(500);
+    // and unset in further
+        $this->gcm->setTtl(false);
+
+    // set group for messages if needed
+        $this->gcm->setGroup('Test');
+    // or set to default
+        $this->gcm->setGroup(false);
+
+    // then send
+        if ($this->gcm->send())
+            echo 'Success for all messages';
+        else
+            echo 'Some messages have errors';
+
+    // and see responses for more info
+        print_r($this->gcm->status);
+        print_r($this->gcm->messagesStatuses);
+
+    die(' Worked.');
+	
+		
+		
+	}
+}
+
+/* End of file welcome.php */
+/* Location: ./application/controllers/welcome.php */

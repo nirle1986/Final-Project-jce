@@ -28,6 +28,14 @@ public class DatePickerFragment extends DialogFragment
         int day = c.get(Calendar.DAY_OF_MONTH);
         listener = (TheListener) getActivity();
 
+//        DatePickerDialog dialog = new DatePickerDialog(getActivity(), this, year, month, day);
+//        DatePicker datePicker = dialog.getDatePicker();
+//        Calendar calendar = Calendar.getInstance();//get the current day
+//        datePicker.setMinDate(calendar.getTimeInMillis());//set the current day as the max date
+//        return dialog;
+
+
+
 // Create a new instance of DatePickerDialog and return it
         return new DatePickerDialog(getActivity(), this, year, month, day);
     }
@@ -37,7 +45,7 @@ public class DatePickerFragment extends DialogFragment
         Calendar c = Calendar.getInstance();
         c.set(year, month, day);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String formattedDate = sdf.format(c.getTime());
         if (listener != null)
         {

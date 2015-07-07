@@ -3,6 +3,7 @@ package com.example.final_project;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,8 +43,23 @@ public class menu extends Activity {
     //change to request screen when the button of send request is clicked
     public void sendRequest(View view)
     {
-            Intent intent = new Intent(this,request.class);
-            startActivity(intent);
+        String id="";
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            String value = extras.getString("user_id");
+            id=value;
+            Log.v("user_id", id);
+        }
+        Intent i = new Intent(menu.this, request.class);
+        i.putExtra("user_id",id);
+        startActivity(i);
+
+    }
+
+    public void getRequest(View view)
+    {
+        Intent intent = new Intent(this,request_list.class);
+        startActivity(intent);
 
     }
 }

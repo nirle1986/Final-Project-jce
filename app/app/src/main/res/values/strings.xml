@@ -9,6 +9,8 @@
     <string name="title_activity_request">מנועי בית שמש</string>
     <string name="title_activity_menu">מנועי בית שמש</string>
     <string name="toast_sync_completed">\"user nor valid!\"</string>
+    <string name="msglbl">"Message : "</string>
+    <string name="regbutton">Register Device</string>
 
     <string-array name="reason">
         <item>בחר סיבת היעדרות</item>
@@ -24,7 +26,12 @@
         <item>יום בחירה</item>
     </string-array>
 
-
-
+    <string name="title_activity_mmenu">mmenu</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_list">list</string>
+    <string name="title_activity_request_list">request_list</string>
+    <string name="title_activity_gcm_message">gcm_message</string>
+    <string name="title_activity_manager_request_list">manager_request_list</string>
+    <string name="title_activity_request_details">request_details</string>
 
 </resources>

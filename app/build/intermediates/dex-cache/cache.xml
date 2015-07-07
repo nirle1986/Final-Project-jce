@@ -2,6 +2,20 @@
 <items version="2" >
 
     <item
+        jar="C:\Users\Nir\AndroidstudioProjects\final-project\app\build\intermediates\exploded-aar\com.google.android.gms\play-services\3.1.59\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="2dd7b1a9ea65bb03d9cd16df777eeaf537a1fc81">
+        <dex dex="C:\Users\Nir\AndroidstudioProjects\final-project\app\build\intermediates\pre-dexed\debug\classes-c710481c486f275177b5327f592c64c80a43b4ab.jar" />
+    </item>
+    <item
+        jar="C:\Users\Nir\AndroidstudioProjects\final-project\app\libs\gcm.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="a6d7bce795a14c7f86111756c4ceb44b79de14aa">
+        <dex dex="C:\Users\Nir\AndroidstudioProjects\final-project\app\build\intermediates\pre-dexed\debug\gcm-ca0612cf8f570239b1549da380a7a810f9b551ff.jar" />
+    </item>
+    <item
         jar="C:\Users\Nir\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-v4\19.1.0\support-v4-19.1.0.jar"
         jumboMode="false"
         revision="21.1.2"

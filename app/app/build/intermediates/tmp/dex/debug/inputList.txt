@@ -1,2 +1,4 @@
 C:\Users\Nir\AndroidstudioProjects\final-project\app\build\intermediates\classes\debug
+C:\Users\Nir\AndroidstudioProjects\final-project\app\build\intermediates\pre-dexed\debug\gcm-ca0612cf8f570239b1549da380a7a810f9b551ff.jar
+C:\Users\Nir\AndroidstudioProjects\final-project\app\build\intermediates\pre-dexed\debug\classes-c710481c486f275177b5327f592c64c80a43b4ab.jar
 C:\Users\Nir\AndroidstudioProjects\final-project\app\build\intermediates\pre-dexed\debug\support-v4-19.1.0-9c7a989db74601ed8021442dc7ca66b8abf86d8a.jar
