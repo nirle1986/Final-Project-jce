@@ -75,6 +75,7 @@
     <string name="id">תעודת זהות</string>
     <string name="msglbl">"Message : "</string>
     <string name="regbutton">Register Device</string>
+    <string name="title_activity_full_screen_image">FullScreenImage</string>
     <string name="title_activity_gcm_message">gcm_message</string>
     <string name="title_activity_list">list</string>
     <string name="title_activity_manager_request_list">manager_request_list</string>

@@ -95,6 +95,10 @@
             android:name="com.example.final_project.request_details"
             android:label="@string/app_name" >
         </activity>
+        <activity
+            android:name="com.example.final_project.FullScreenImage"
+            android:label="@string/title_activity_full_screen_image" >
+        </activity>
     </application>
 
 </manifest>

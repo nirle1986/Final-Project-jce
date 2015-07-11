@@ -49,12 +49,13 @@ public class GCMIntentService extends GCMBaseIntentService {
 		String message;
 		// Message from PHP server
 		message = data.getStringExtra("message");
-        if(message=="new"){
-            Log.v("check","ok");
-        }
-        Intent intent = new Intent(this, gcm_message.class);
+        String[] components  = message.split("@@");
+        String textToShow = components[0];
+        String requestId = components[1];
+
+        Intent intent = new Intent(this, request_details.class);
 		// Pass data to the new activity
-		intent.putExtra("message", message);
+		intent.putExtra("message", textToShow);
 		// Starts the activity on notification click
 		PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent,
 				PendingIntent.FLAG_UPDATE_CURRENT);

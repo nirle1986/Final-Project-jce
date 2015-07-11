@@ -9,6 +9,13 @@
         <dex dex="C:\Users\Nir\AndroidstudioProjects\final-project\app\build\intermediates\pre-dexed\debug\classes-c710481c486f275177b5327f592c64c80a43b4ab.jar" />
     </item>
     <item
+        jar="C:\Users\Nir\AndroidstudioProjects\final-project\app\libs\json-simple-1.1.1.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="5d6f9b6a9ddca2a28c0216cc44efb2e20d9c23b5">
+        <dex dex="C:\Users\Nir\AndroidstudioProjects\final-project\app\build\intermediates\pre-dexed\debug\json-simple-1.1.1-5eded56daaf85746b607f2f0964c37a561bac876.jar" />
+    </item>
+    <item
         jar="C:\Users\Nir\AndroidstudioProjects\final-project\app\libs\gcm.jar"
         jumboMode="false"
         revision="21.1.2"

@@ -8,7 +8,9 @@
         android:id="@+id/msglbl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/msglbl" />
+        android:text="@string/msglbl"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:id="@+id/message"

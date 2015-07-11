@@ -33,5 +33,6 @@
     <string name="title_activity_gcm_message">gcm_message</string>
     <string name="title_activity_manager_request_list">manager_request_list</string>
     <string name="title_activity_request_details">request_details</string>
+    <string name="title_activity_full_screen_image">FullScreenImage</string>
 
 </resources>

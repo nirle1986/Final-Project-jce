@@ -6,8 +6,9 @@ import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -24,21 +25,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
-
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.google.android.gcm.GCMRegistrar;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException;
+import java.lang.ref.WeakReference;
 import org.json.JSONObject;
 
 
@@ -51,14 +43,19 @@ public class request extends Activity  implements DatePickerFragment.TheListener
     EditText comments;
     int pressedBtn=-1;
     private Spinner reasonSpinner;
+    //if no reason was selected
     int NothingSelected;
     // Progress Dialog
+    //handler
+    private final mainHandler handler = new mainHandler(this);
+    JSONObject json;
     private ProgressDialog pDialog;
     // JSON parser class
     JSONParser jsonParser = new JSONParser();
-    private static final String LOGIN_URL = "http://www.nir-levi.com/request/";
+    //url
+    private static final String REQUEST_URL = "http://www.nir-levi.com/app/set_request.php";
     //JSON element ids from repsonse of php script:
-    private static final String TAG_SUCCESS = "success";
+    private static final String TAG_UPLOAD = "upload";
     private static final String TAG_MESSAGE = "message";
     //send to server
     String id;
@@ -68,34 +65,31 @@ public class request extends Activity  implements DatePickerFragment.TheListener
     Bitmap sendimage;//Variable to send the image
     String sendcomments;//Variable to send the comments
 
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request);
         //match all the buttons to their related buttons.
-        btn=(Button)findViewById(R.id.button);
-        btn1=(Button)findViewById(R.id.button2);
-        PicButton=(Button)findViewById(R.id.PicButton);
-        viewImage=(ImageView)findViewById(R.id.viewImage);
+        btn = (Button) findViewById(R.id.button);
+        btn1 = (Button) findViewById(R.id.button2);
+        PicButton = (Button) findViewById(R.id.PicButton);
+        viewImage = (ImageView) findViewById(R.id.viewImage);
         PicButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selectImage();
             }
         });
-        comments= (EditText) findViewById(R.id.editText);
+        comments = (EditText) findViewById(R.id.editText);
 
         //add item to the spinner(reason of Absence).
         addItemsToReasonSpinner();
         addListenerToReasonSpinner();
+        //get the user id from the main activity
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             String value = extras.getString("user_id");
-            id=value;
+            id = value;
         }
         Log.v("check", id);
         //listeners to the date buttons
@@ -106,7 +100,7 @@ public class request extends Activity  implements DatePickerFragment.TheListener
                 // TODO Auto-generated method stub
                 DialogFragment picker = new DatePickerFragment();
                 picker.show(getFragmentManager(), "datePicker");
-                pressedBtn=0;
+                pressedBtn = 0;
             }
 
         });
@@ -117,13 +111,28 @@ public class request extends Activity  implements DatePickerFragment.TheListener
                 // TODO Auto-generated method stub
                 DialogFragment picker = new DatePickerFragment();
                 picker.show(getFragmentManager(), "datePicker");
-                pressedBtn=1;
+                pressedBtn = 1;
             }
 
         });
+        //make the image bigger on click
+        viewImage.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(request.this, FullScreenImage.class);
+
+                viewImage.buildDrawingCache();
+                Bitmap image = viewImage.getDrawingCache();
+
+                Bundle extras = new Bundle();
+                extras.putParcelable("imagebitmap", image);
+                intent.putExtras(extras);
+                startActivity(intent);
+
+            }
+        });
     }
-
-
     //change to text on the button to selected date
     public void returnDate(String date) {
         if(pressedBtn==0) {
@@ -136,8 +145,6 @@ public class request extends Activity  implements DatePickerFragment.TheListener
         }
 
     }
-
-
     //add the spinner to choose reason of absence
     public void addItemsToReasonSpinner(){
 
@@ -173,8 +180,6 @@ public class request extends Activity  implements DatePickerFragment.TheListener
             }
         });
     }
-
-
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_request, menu);
@@ -208,7 +213,6 @@ public class request extends Activity  implements DatePickerFragment.TheListener
         });
         builder.show();
     }
-
     //show the picture according to the user's choice.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -269,84 +273,6 @@ public class request extends Activity  implements DatePickerFragment.TheListener
             }
         }
     }
-
-    class sendrequest extends AsyncTask<String, String, String> {
-
-        /**
-         * Before starting background thread Show Progress Dialog
-         */
-        boolean failure = false;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            pDialog = new ProgressDialog(request.this);
-            pDialog.setMessage("שולח בקשה...");
-            pDialog.setIndeterminate(false);
-            pDialog.setCancelable(true);
-            pDialog.show();
-        }
-
-        @Override
-        protected String doInBackground(String... args) {
-            // TODO Auto-generated method stub
-            // Check for success tag
-            int upload;
-
-            try {
-                // Building Parameters
-                List<NameValuePair> params = new ArrayList<NameValuePair>();
-                params.add(new BasicNameValuePair("user_id", id));
-                params.add(new BasicNameValuePair("from_date",FromDate ));
-                params.add(new BasicNameValuePair("to_date",ToDate));
-                params.add(new BasicNameValuePair("reason",reason));
-            //    params.add(new BasicNameValuePair("send_image",sendimage));
-                params.add(new BasicNameValuePair("send_comments",sendcomments));
-
-                Log.d("request!", "starting");
-                // getting product details by making HTTP request
-                JSONObject json = jsonParser.makeHttpRequest(
-                        LOGIN_URL, "POST", params);
-
-                // check log for json response
-                Log.d("Login attempt", json.toString());
-
-                // json success tag
-                upload = json.getInt("upload");
-                if (upload == 1) {
-                    Log.d("upload Successful!", json.toString());
-                    Log.d("check","request sent");
-                    Intent i = new Intent(request.this, menu.class);
-                    startActivity(i);
-                    finish();
-                    return json.getString(TAG_MESSAGE);
-                } else {
-                    Log.d("upload Failure!", json.getString(TAG_MESSAGE));
-                    return json.getString(TAG_MESSAGE);
-
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            return null;
-
-        }
-
-        /**
-         * After completing background task Dismiss the progress dialog
-         * *
-         */
-        protected void onPostExecute(String file_url) {
-            // dismiss the dialog once product deleted
-            pDialog.dismiss();
-            if (file_url != null) {
-                Toast.makeText(request.this, file_url, Toast.LENGTH_LONG).show();
-            }
-
-        }
-    }
-
     //the button of the clear fields
     public void clearFields(View view){
         startActivity(getIntent());
@@ -354,9 +280,7 @@ public class request extends Activity  implements DatePickerFragment.TheListener
     }
     //the button of send the request
     public void sendRequest(View view){
-        int newrequest=0;
         sendcomments=comments.getText().toString();
-        //if no reason of absence was selected
         if (NothingSelected==0){
                 final CharSequence[] options = { "נסה מחדש"};
                 AlertDialog.Builder builder = new AlertDialog.Builder(request.this);
@@ -372,24 +296,87 @@ public class request extends Activity  implements DatePickerFragment.TheListener
                 builder.show();
         }
         else{
-        //    Intent i = new Intent(request.this, list.class);
-        //    finish();
-        //    startActivity(i);
-       //     Log.v("send","send request");
-       //     Log.v("check",FromDate);
-        //    Log.v("check",ToDate);
-        //    Log.v("check",reason);
-         //   Log.v("check",sendcomments);
-            new sendrequest().execute();
-            newrequest=1;
-            //Intent i = new Intent(request.this, request_list.class);
-            //i.putExtra("newrequest",newrequest);
-            //startActivity(i);
-            //finish();
+            //show dialog while try to send request
+            pDialog = new ProgressDialog(request.this);
+            pDialog.setMessage("שולח בקשה");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(false);
+            pDialog.show();
+
+            new Thread(new Runnable() {
+                public void run() {
+                    int upload;
+                    JSONObject parent=new JSONObject();
+                    try {
+                        //send to parameters to the server
+                        parent.put("user_id",id);
+                        parent.put("from_date", FromDate);
+                        parent.put("to_date", ToDate);
+                        parent.put("reason", reason);
+                        parent.put("send_comments", sendcomments);
+
+                        //using json parser class to send the parameters to the server.
+                        json =  jsonParser.sendPost(REQUEST_URL,jsonParser.getPostStringJson(parent));
+                        upload = json.getInt(TAG_UPLOAD);
+                        if (upload == 1) {
+                            handler.sendEmptyMessage(1);
+                        }
+                        else{
+                            handler.sendEmptyMessage(2);
+                        }
+                    }catch(Exception e){
+                        handler.sendEmptyMessage(0);
+                    }
+                }
+            }).start();
+
+
 
         }
-        //send the request
+
+    }
+
+    private static class mainHandler extends Handler {
+        //Using a weak reference means you won't prevent garbage collection
+        private final WeakReference<request> myClassWeakReference;
+        public mainHandler(request myClassInstance) {
+            myClassWeakReference = new WeakReference<request>(myClassInstance);
+        }
+        @Override
+        public void handleMessage(Message msg) {
+            request myClass = myClassWeakReference.get();
+            if (myClass != null) {
+                if(myClass.pDialog != null) {
+                    myClass.pDialog.dismiss();
+                }
+                if (msg.what == 0)
+                {
+                    //dialog error
+                }
+                if (msg.what == 1) {
+                    try {
+                            Log.d("request sent", myClass.json.toString());
+                            Intent i = new Intent(myClass, menu.class);
+                            myClass.startActivity(i);
+                            myClass.finish();
+                            Toast.makeText(myClass, myClass.json.getString(TAG_MESSAGE), Toast.LENGTH_LONG).show();
+                    }
+                    catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+                if (msg.what == 2) {
+                    try {
+                        Toast.makeText(myClass, myClass.json.getString(TAG_MESSAGE), Toast.LENGTH_LONG).show();
+                    }
+                    catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+                super.handleMessage(msg);
+
+            }
+        }
     }
 
 }
-
