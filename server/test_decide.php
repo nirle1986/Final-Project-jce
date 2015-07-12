@@ -3,19 +3,15 @@ require 'paptap_connect.php';
 require 'gcm.php';
 
 
-
 $req_id				= $_REQUEST['req_id'];
 $decision			= $_REQUEST['decision'];
 $manager_comments	= $_REQUEST['manager_comments'];
-
 
 if ($req_id != ""){
 
 	dbExecute("UPDATE requests SET req_manager_dec = $decision,
 								   req_manager_comment = '$manager_comments'
 				WHERE id = $req_id");
-
-
 
 
 	$userRow = dbGetRow("SELECT requests.id req_id, 
@@ -42,6 +38,7 @@ if ($req_id != ""){
 		$response["message"] = "לא נשלח פוש לעובד";	
 	}
 
+
 }else{
 
 	$response["decide"] = 0;
@@ -53,14 +50,13 @@ if ($req_id != ""){
 
 		$to = "nirle1986@gmail.com";
 		$subject = "בקשת חופשה";
-		$txt = "בקשת חופשה מ     מתאריך      עד תאריך     סיבת היעדרות      " ;
+		$txt = "Hello world!";
 		$headers = "";
 
 		mail($to,$subject,$txt,$headers);
 	}
+
 echo json_encode($response);	
-
-
 
 
 function sendGCM($message,$registration_id){
@@ -79,7 +75,7 @@ function sendGCM($message,$registration_id){
 //decision 1 = Approved.
 //decision 2 = Not Approved. or Declined
 
-//http://www.nir-levi.com/app/decide_request.php?req_id=15&decision=1&manager_comments=LoLoLo
+//http://www.nir-levi.com/app/test_decide.php?req_id=1&decision=1&manager_comments=LoLoLo
 
 
 ?>

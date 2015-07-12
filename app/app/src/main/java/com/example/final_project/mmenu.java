@@ -55,17 +55,13 @@ public class mmenu extends Activity {
         startActivity(i);
 
     }
-    public void getRequest(View view)
-    {
-        Intent intent = new Intent(this,request_list.class);
-        startActivity(intent);
-
-    }
-    public void approveRequest (View view)
+    public void getRequests(View view)
     {
         Intent intent = new Intent(this,manager_request_list.class);
         startActivity(intent);
+
     }
+
 
 
 

@@ -34,5 +34,6 @@
     <string name="title_activity_manager_request_list">manager_request_list</string>
     <string name="title_activity_request_details">request_details</string>
     <string name="title_activity_full_screen_image">FullScreenImage</string>
+    <string name="title_activity_decision_details">decision_details</string>
 
 </resources>

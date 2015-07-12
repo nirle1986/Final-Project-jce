@@ -28,8 +28,7 @@
         android:inputType="number"
         android:layout_above="@+id/editText2"
         android:layout_centerHorizontal="true"
-        android:hint="מספר עובד"
-        android:text="12345" />
+        android:hint="מספר עובד" />
 
     <EditText
         android:id="@+id/editText2"
@@ -40,8 +39,7 @@
         android:inputType="number"
         android:layout_above="@+id/button1"
         android:layout_centerHorizontal="true"
-        android:hint="תעודת זהות"
-        android:text="300140571" />
+        android:hint="תעודת זהות" />
 
 
 </RelativeLayout><!-- From: file:/C:/Users/Nir/AndroidstudioProjects/final-project/app/src/main/res/layout/activity_main.xml -->

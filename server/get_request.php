@@ -6,7 +6,9 @@ $requestId 			= $_REQUEST['request_id'];
 $requestRow = dbGetRow("SELECT requests.id req_id, 
 								requests.user_id req_user_id, 
 								from_date, to_date, 
-								reason, send_comments, 
+								reason, send_comments,
+								req_manager_dec,
+								req_manager_comment,
 								first_name, 
 								last_name,
 								registration_id 
@@ -22,6 +24,8 @@ if ($requestRow != ""){
 	$response["to"] = $requestRow["to_date"];
 	$response["reason"] = $requestRow["reason"];
 	$response["comment"] = $requestRow["send_comments"];
+	$response["decision"] = $requestRow["req_manager_dec"];
+	$response["manager_comment"] = $requestRow["req_manager_comment"];
 	$response["first_name"] = $requestRow["first_name"];
 	$response["last_name"] = $requestRow["last_name"];
 

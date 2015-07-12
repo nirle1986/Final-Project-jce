@@ -19,6 +19,8 @@ import java.lang.ref.WeakReference;
 
 public class MainActivity extends Activity {
 
+    String id;
+
     private EditText employeNum;
     private EditText Id;
     // Progress Dialog
@@ -35,15 +37,16 @@ public class MainActivity extends Activity {
     private static final String TAG_USER_LEVEL = "user_level";
     String deviceID;
     JSONObject json;
-    String id;
 
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
+        //INSTANCE=this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         deviceID = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
+        Log.v("device id",deviceID);
 
         //match the employ number and the id to their edit text.
         employeNum = (EditText) findViewById(R.id.editText1);
@@ -57,6 +60,7 @@ public class MainActivity extends Activity {
             getMenuInflater().inflate(R.menu.main, menu);
             return true;
         }
+
 
         //call the asynctask when button click-to connect the server
         public void login(View v) {
@@ -79,6 +83,7 @@ public class MainActivity extends Activity {
                     if(regId.isEmpty()) {
                         GCMRegistrar.register(MainActivity.this, GCMIntentService.SENDER_ID);
                         regId=GCMRegistrar.getRegistrationId(MainActivity.this);
+                        Log.v("empty",regId);
                     }
                     JSONObject parent=new JSONObject();
                     try {

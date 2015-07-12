@@ -50,50 +50,101 @@ public class GCMIntentService extends GCMBaseIntentService {
 		// Message from PHP server
 		message = data.getStringExtra("message");
         String[] components  = message.split("@@");
-        String textToShow = components[0];
-        String requestId = components[1];
+//        String comments = components[2];//comments
+        String reason = components[1];//reason
+        String requestId = components[0];
+        if(reason.equals("1") || reason.equals("2")){
+            Intent intent = new Intent(this, decision_details.class);
+            // Pass data to the new activity
+            intent.putExtra("message", requestId);
+            // Starts the activity on notification click
+            PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT);
+            // Create the notification with a notification builder
+            Notification notification = new Notification.Builder(this)
+                    .setSmallIcon(R.drawable.ic_launcher)
+                    .setWhen(System.currentTimeMillis())
+                    .setContentTitle("מנועי בית שמש")
+                    .setContentText("התקבלה תגובה לבקשתך").setContentIntent(pIntent)
+                    .getNotification();
+            // Remove the notification on click
+            notification.flags |= Notification.FLAG_AUTO_CANCEL;
 
-        Intent intent = new Intent(this, request_details.class);
-		// Pass data to the new activity
-		intent.putExtra("message", textToShow);
-		// Starts the activity on notification click
-		PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent,
-				PendingIntent.FLAG_UPDATE_CURRENT);
-		// Create the notification with a notification builder
-		Notification notification = new Notification.Builder(this)
-				.setSmallIcon(R.drawable.ic_launcher)
-				.setWhen(System.currentTimeMillis())
-				.setContentTitle("מנועי בית שמש")
-				.setContentText(message).setContentIntent(pIntent)
-				.getNotification();
-		// Remove the notification on click
-		notification.flags |= Notification.FLAG_AUTO_CANCEL;
+            Uri notificationSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notificationSound);
+            r.play();
 
-        Uri notificationSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notificationSound);
-        r.play();
+            NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            manager.notify(R.string.app_name, notification);
 
-		NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-		manager.notify(R.string.app_name, notification);
+            {
+                // Wake Android Device when notification received
+                PowerManager pm = (PowerManager) context
+                        .getSystemService(Context.POWER_SERVICE);
+                final PowerManager.WakeLock mWakelock = pm.newWakeLock(
+                        PowerManager.FULL_WAKE_LOCK
+                                | PowerManager.ACQUIRE_CAUSES_WAKEUP, "GCM_PUSH");
+                mWakelock.acquire();
 
-		{
-			// Wake Android Device when notification received
-			PowerManager pm = (PowerManager) context
-					.getSystemService(Context.POWER_SERVICE);
-			final PowerManager.WakeLock mWakelock = pm.newWakeLock(
-					PowerManager.FULL_WAKE_LOCK
-							| PowerManager.ACQUIRE_CAUSES_WAKEUP, "GCM_PUSH");
-			mWakelock.acquire();
+                // Timer before putting Android Device to sleep mode.
+                Timer timer = new Timer();
+                TimerTask task = new TimerTask() {
+                    public void run() {
+                        mWakelock.release();
+                    }
+                };
+                timer.schedule(task, 5000);
+            }
+        }
+        else{
+            Intent intent = new Intent(this, request_details.class);
+            // Pass data to the new activity
+            intent.putExtra("message", requestId);
+            // Starts the activity on notification click
+            PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT);
+            // Create the notification with a notification builder
+            Notification notification = new Notification.Builder(this)
+                    .setSmallIcon(R.drawable.ic_launcher)
+                    .setWhen(System.currentTimeMillis())
+                    .setContentTitle("מנועי בית שמש")
+                    .setContentText("יש לך בקשה חדשה").setContentIntent(pIntent)
+                    .getNotification();
+            // Remove the notification on click
+            notification.flags |= Notification.FLAG_AUTO_CANCEL;
 
-			// Timer before putting Android Device to sleep mode.
-			Timer timer = new Timer();
-			TimerTask task = new TimerTask() {
-				public void run() {
-					mWakelock.release();
-				}
-			};
-			timer.schedule(task, 5000);
-		}
+            Uri notificationSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notificationSound);
+            r.play();
+
+            NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            manager.notify(R.string.app_name, notification);
+
+            {
+                // Wake Android Device when notification received
+                PowerManager pm = (PowerManager) context
+                        .getSystemService(Context.POWER_SERVICE);
+                final PowerManager.WakeLock mWakelock = pm.newWakeLock(
+                        PowerManager.FULL_WAKE_LOCK
+                                | PowerManager.ACQUIRE_CAUSES_WAKEUP, "GCM_PUSH");
+                mWakelock.acquire();
+
+                // Timer before putting Android Device to sleep mode.
+                Timer timer = new Timer();
+                TimerTask task = new TimerTask() {
+                    public void run() {
+                        mWakelock.release();
+                    }
+                };
+                timer.schedule(task, 5000);
+            }
+        }
+
+        //Log.v("textToShow",comments);
+        //Log.v("textToShow1",reason);
+        //Log.v("requestId",requestId);
+
+
 
 	}
 

@@ -11,10 +11,19 @@ import android.view.View;
 
 public class menu extends Activity {
 
+    String id="";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            String value = extras.getString("user_id");
+            id=value;
+            Log.v("user_id", id);
+        }
     }
 
 
@@ -43,22 +52,15 @@ public class menu extends Activity {
     //change to request screen when the button of send request is clicked
     public void sendRequest(View view)
     {
-        String id="";
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            String value = extras.getString("user_id");
-            id=value;
-            Log.v("user_id", id);
-        }
         Intent i = new Intent(menu.this, request.class);
         i.putExtra("user_id",id);
         startActivity(i);
-
     }
 
-    public void getRequest(View view)
+    public void getRequests(View view)
     {
         Intent intent = new Intent(this,request_list.class);
+        intent.putExtra("user_id",id);
         startActivity(intent);
 
     }

@@ -349,9 +349,12 @@ public class request extends Activity  implements DatePickerFragment.TheListener
                 if(myClass.pDialog != null) {
                     myClass.pDialog.dismiss();
                 }
-                if (msg.what == 0)
-                {
-                    //dialog error
+                if (msg.what == 0){
+                    try {
+                        Toast.makeText(myClass, "Error", Toast.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
                 if (msg.what == 1) {
                     try {

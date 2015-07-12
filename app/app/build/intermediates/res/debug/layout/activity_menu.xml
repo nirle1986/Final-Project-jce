@@ -21,8 +21,8 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="קבלת אישורים"
-        android:onClick="getRequest"
+        android:text="בקשות שנשלחו"
+        android:onClick="getRequests"
         android:id="@+id/button6"
         android:layout_below="@+id/sendRequest"
         android:layout_alignParentLeft="true"

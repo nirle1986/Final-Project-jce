@@ -180,3 +180,9 @@ ADDED from AndroidManifest.xml:98:9
 		ADDED from AndroidManifest.xml:100:13
 	android:name
 		ADDED from AndroidManifest.xml:99:13
+activity#com.example.final_project.decision_details
+ADDED from AndroidManifest.xml:102:9
+	android:label
+		ADDED from AndroidManifest.xml:104:13
+	android:name
+		ADDED from AndroidManifest.xml:103:13
