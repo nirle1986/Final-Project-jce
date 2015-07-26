@@ -62,7 +62,7 @@ public class MainActivity extends Activity {
         }
 
 
-        //call the asynctask when button click-to connect the server
+        //open new thread to connect the server when button clicked
         public void login(View v) {
             //show dialog while try to login
             pDialog = new ProgressDialog(MainActivity.this);
@@ -123,13 +123,20 @@ public class MainActivity extends Activity {
                 if(myClass.pDialog != null) {
                     myClass.pDialog.dismiss();
                 }
+                //if the connection failed-connection problem
                 if (msg.what == 0)
                 {
-                    //dialog error
+                    try {
+                        Toast.makeText(myClass, "Error", Toast.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
                 }
+                //if the connection successfully
                 if (msg.what == 1) {
                     try {
+                        //check if the user is manager or employee
                         int user_level;
                         user_level = myClass.json.getInt(TAG_USER_LEVEL);
                         if (user_level == 0) {
@@ -152,6 +159,7 @@ public class MainActivity extends Activity {
                         e.printStackTrace();
                     }
                 }
+                //if the connection failed-server problem
                 if (msg.what == 2) {
                     try {
                     Toast.makeText(myClass, myClass.json.getString(TAG_MESSAGE), Toast.LENGTH_LONG).show();
@@ -168,17 +176,3 @@ public class MainActivity extends Activity {
     }
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

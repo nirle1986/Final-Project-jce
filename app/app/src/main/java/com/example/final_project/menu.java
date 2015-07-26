@@ -17,7 +17,7 @@ public class menu extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-
+        //get the user id from the main activity
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             String value = extras.getString("user_id");
@@ -25,7 +25,6 @@ public class menu extends Activity {
             Log.v("user_id", id);
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -52,6 +51,7 @@ public class menu extends Activity {
     //change to request screen when the button of send request is clicked
     public void sendRequest(View view)
     {
+        //send the user id to the next activity
         Intent i = new Intent(menu.this, request.class);
         i.putExtra("user_id",id);
         startActivity(i);
@@ -59,6 +59,7 @@ public class menu extends Activity {
 
     public void getRequests(View view)
     {
+        //send the user id to the next activity
         Intent intent = new Intent(this,request_list.class);
         intent.putExtra("user_id",id);
         startActivity(intent);

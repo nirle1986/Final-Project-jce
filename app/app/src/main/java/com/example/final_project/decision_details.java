@@ -9,12 +9,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import org.json.JSONObject;
-
 import java.lang.ref.WeakReference;
 
 
@@ -58,7 +55,7 @@ public class decision_details extends Activity {
         ManagerComments=(TextView)findViewById(R.id.textView20);
 
 
-        //show dialog while try to send request
+        //show dialog while try to get decision
         pDialog = new ProgressDialog(decision_details.this);
         pDialog.setMessage("מקבל את תגובת המנהל..");
         pDialog.setIndeterminate(false);
@@ -100,6 +97,7 @@ public class decision_details extends Activity {
                 if(myClass.pDialog != null) {
                     myClass.pDialog.dismiss();
                 }
+                //if the decision not received- communication problem
                 if (msg.what == 0) {
                     try {
                         Toast.makeText(myClass, "Error", Toast.LENGTH_LONG).show();
@@ -107,9 +105,10 @@ public class decision_details extends Activity {
                         e.printStackTrace();
                     }
                 }
+                //if the decision received successfully
                 if (msg.what == 1) {
                     try {
-                        //Log.v("get_request", myClass.json.toString());
+                        //set the text with the data that received
                         myClass.FirstName = myClass.json.getString("first_name");
                         myClass.LastName = myClass.json.getString("last_name");
                         myClass.Name.setText(myClass.FirstName+" "+myClass.LastName);
@@ -129,6 +128,7 @@ public class decision_details extends Activity {
                         e.printStackTrace();
                     }
                 }
+                //if the decision not received-server problem
                 if (msg.what == 2) {
                     try {
                         Toast.makeText(myClass, myClass.json.getString(TAG_MESSAGE), Toast.LENGTH_LONG).show();
@@ -142,8 +142,6 @@ public class decision_details extends Activity {
             }
         }
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

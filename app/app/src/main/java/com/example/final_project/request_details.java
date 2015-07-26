@@ -1,14 +1,11 @@
 package com.example.final_project;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,7 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import org.json.JSONObject;
 import java.lang.ref.WeakReference;
-
 
 
 public class request_details extends Activity {
@@ -67,7 +63,7 @@ public class request_details extends Activity {
         ManagerComments=(EditText)findViewById(R.id.editText3);
 
 
-        //show dialog while try to send request
+        //show dialog while try to get the request details
         pDialog = new ProgressDialog(request_details.this);
         pDialog.setMessage("מקבל נתוני בקשה...");
         pDialog.setIndeterminate(false);
@@ -109,6 +105,7 @@ public class request_details extends Activity {
                 if(myClass.pDialog != null) {
                     myClass.pDialog.dismiss();
                 }
+                //if the connection failed-connection problem
                 if (msg.what == 0) {
                     try {
                         Toast.makeText(myClass, "Error", Toast.LENGTH_LONG).show();
@@ -116,9 +113,10 @@ public class request_details extends Activity {
                         e.printStackTrace();
                     }
                 }
+                //if the request details received successfully
                 if (msg.what == 1) {
+                    //set the text with the data that received
                     try {
-                        //Log.v("get_request", myClass.json.toString());
                         myClass.FirstName = myClass.json.getString("first_name");
                         myClass.LastName = myClass.json.getString("last_name");
                         myClass.Name.setText(myClass.FirstName+" "+myClass.LastName);
@@ -127,16 +125,12 @@ public class request_details extends Activity {
                         myClass.Reason.setText(myClass.json.getString("reason"));
                         myClass.Picture.setText("אין");
                         myClass.Details.setText(myClass.json.getString("comment"));
-                        //myClass.ManagerDetails.setText(myClass.json.getString("first_name"));
-                        //Intent i = new Intent(myClass, menu.class);
-                        //myClass.startActivity(i);
-                        //myClass.finish();
-                        //Toast.makeText(myClass, myClass.json.getString(TAG_MESSAGE), Toast.LENGTH_LONG).show();
                     }
                     catch (Exception e){
                         e.printStackTrace();
                     }
                 }
+                //if the connection failed-server problem
                 if (msg.what == 2) {
                     try {
                         Toast.makeText(myClass, myClass.json.getString(TAG_MESSAGE), Toast.LENGTH_LONG).show();
@@ -145,6 +139,7 @@ public class request_details extends Activity {
                         e.printStackTrace();
                     }
                 }
+                //if the decision was sent successfully
                 if (msg.what == 3) {
                     try {
                         Toast.makeText(myClass, "ההחלטה נשלחה", Toast.LENGTH_LONG).show();
@@ -152,6 +147,7 @@ public class request_details extends Activity {
                         e.printStackTrace();
                     }
                 }
+                //if the decision was sent successfully
                 if (msg.what == 4) {
                     try {
                         Toast.makeText(myClass, "ההחלטה לא נשלחה", Toast.LENGTH_LONG).show();
@@ -187,6 +183,7 @@ public class request_details extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    //open new thread to send the decision to the server when button clicked - id decision was approved
     public void approve(View view){
         SendManagerComments=ManagerComments.getText().toString();
         approve=1;
@@ -225,6 +222,7 @@ public class request_details extends Activity {
 
 
         }
+    //open new thread to send the decision to the server when button clicked - id decision was refused
     public void refuse(View view){
         SendManagerComments=ManagerComments.getText().toString();
         refuse=2;

@@ -3,7 +3,6 @@ package com.example.final_project;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -11,16 +10,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
-import android.widget.AdapterViewAnimator;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import org.json.JSONObject;
-
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
@@ -57,7 +52,7 @@ public class request_list extends Activity {
         }
         Log.v("user_id", id);
 
-        //show dialog while try to send request
+        //show dialog while try to get the requests
         pDialog = new ProgressDialog(request_list.this);
         pDialog.setMessage("מקבל בקשות..");
         pDialog.setIndeterminate(false);
@@ -116,6 +111,7 @@ public class request_list extends Activity {
                 if (myClass.pDialog != null) {
                     myClass.pDialog.dismiss();
                 }
+                //if the connection failed-connection problem
                 if (msg.what == 0) {
                     try {
                         Toast.makeText(myClass, "Error", Toast.LENGTH_LONG).show();
@@ -123,6 +119,7 @@ public class request_list extends Activity {
                         e.printStackTrace();
                     }
                 }
+                //if the request received successfully
                 if (msg.what == 1) {
                     try {
                         Log.v("get_request", myClass.json.toString());
@@ -130,6 +127,7 @@ public class request_list extends Activity {
                         e.printStackTrace();
                     }
                 }
+                //if the connection failed-server problem
                 if (msg.what == 2) {
                     try {
                         Toast.makeText(myClass, myClass.json.getString(TAG_MESSAGE), Toast.LENGTH_LONG).show();

@@ -49,10 +49,11 @@ public class GCMIntentService extends GCMBaseIntentService {
 		String message;
 		// Message from PHP server
 		message = data.getStringExtra("message");
+        //split the message that received from the gcm server
         String[] components  = message.split("@@");
-//        String comments = components[2];//comments
         String reason = components[1];//reason
         String requestId = components[0];
+        //if the message is response for the manager
         if(reason.equals("1") || reason.equals("2")){
             Intent intent = new Intent(this, decision_details.class);
             // Pass data to the new activity
@@ -96,6 +97,7 @@ public class GCMIntentService extends GCMBaseIntentService {
                 timer.schedule(task, 5000);
             }
         }
+        //if the message is new request
         else{
             Intent intent = new Intent(this, request_details.class);
             // Pass data to the new activity
@@ -139,13 +141,6 @@ public class GCMIntentService extends GCMBaseIntentService {
                 timer.schedule(task, 5000);
             }
         }
-
-        //Log.v("textToShow",comments);
-        //Log.v("textToShow1",reason);
-        //Log.v("requestId",requestId);
-
-
-
 	}
 
 	@Override

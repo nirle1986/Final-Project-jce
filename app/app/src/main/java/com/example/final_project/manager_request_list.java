@@ -14,12 +14,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,12 +43,6 @@ public class manager_request_list extends Activity {
         setContentView(R.layout.activity_manager_request_list);
 
         list= (ListView)findViewById(R.id.listView);
-
-//       Bundle extras = getIntent().getExtras();
-//        if (extras != null) {
-//            int value = extras.getInt("newrequest");
-//            addrequest=value;
- //       }
         addrequest=1;
         request= new ArrayList<String>();
         if(addrequest==1){

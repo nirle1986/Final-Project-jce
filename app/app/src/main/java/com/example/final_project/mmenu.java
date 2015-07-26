@@ -17,7 +17,6 @@ public class mmenu extends Activity {
         setContentView(R.layout.activity_mmenu);
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -43,6 +42,7 @@ public class mmenu extends Activity {
     //change to request screen when the button of send request is clicked
     public void sendRequest(View view)
     {
+        //get the user id from the main activity
         String id="";
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -50,6 +50,7 @@ public class mmenu extends Activity {
             id=value;
             Log.v("user_id", id);
         }
+        //send the user id to the next activity
         Intent i = new Intent(mmenu.this, request.class);
         i.putExtra("user_id",id);
         startActivity(i);

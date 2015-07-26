@@ -4,9 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.DatePicker;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -27,14 +25,6 @@ public class DatePickerFragment extends DialogFragment
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
         listener = (TheListener) getActivity();
-
-//        DatePickerDialog dialog = new DatePickerDialog(getActivity(), this, year, month, day);
-//        DatePicker datePicker = dialog.getDatePicker();
-//        Calendar calendar = Calendar.getInstance();//get the current day
-//        datePicker.setMinDate(calendar.getTimeInMillis());//set the current day as the max date
-//        return dialog;
-
-
 
 // Create a new instance of DatePickerDialog and return it
         return new DatePickerDialog(getActivity(), this, year, month, day);

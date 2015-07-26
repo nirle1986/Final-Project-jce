@@ -85,7 +85,7 @@ public class request extends Activity  implements DatePickerFragment.TheListener
         //add item to the spinner(reason of Absence).
         addItemsToReasonSpinner();
         addListenerToReasonSpinner();
-        //get the user id from the main activity
+        //get the user id from the menu
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             String value = extras.getString("user_id");
@@ -115,7 +115,7 @@ public class request extends Activity  implements DatePickerFragment.TheListener
             }
 
         });
-        //make the image bigger on click
+        //make the image bigger on click- open FullScreenImage activity
         viewImage.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -278,9 +278,10 @@ public class request extends Activity  implements DatePickerFragment.TheListener
         startActivity(getIntent());
         finish();
     }
-    //the button of send the request
+    //open new thread to send the request to the server when button clicked
     public void sendRequest(View view){
         sendcomments=comments.getText().toString();
+        //if reason of absence not choose
         if (NothingSelected==0){
                 final CharSequence[] options = { "נסה מחדש"};
                 AlertDialog.Builder builder = new AlertDialog.Builder(request.this);
@@ -349,6 +350,7 @@ public class request extends Activity  implements DatePickerFragment.TheListener
                 if(myClass.pDialog != null) {
                     myClass.pDialog.dismiss();
                 }
+                //if the connection failed-connection problem
                 if (msg.what == 0){
                     try {
                         Toast.makeText(myClass, "Error", Toast.LENGTH_LONG).show();
@@ -356,6 +358,7 @@ public class request extends Activity  implements DatePickerFragment.TheListener
                         e.printStackTrace();
                     }
                 }
+                //if the request sent successfully
                 if (msg.what == 1) {
                     try {
                             Log.d("request sent", myClass.json.toString());
@@ -368,6 +371,7 @@ public class request extends Activity  implements DatePickerFragment.TheListener
                         e.printStackTrace();
                     }
                 }
+                //if the connection failed-server problem
                 if (msg.what == 2) {
                     try {
                         Toast.makeText(myClass, myClass.json.getString(TAG_MESSAGE), Toast.LENGTH_LONG).show();
